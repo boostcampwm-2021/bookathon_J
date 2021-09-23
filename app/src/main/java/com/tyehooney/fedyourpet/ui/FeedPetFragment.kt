@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.bumptech.glide.Glide
+
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tyehooney.fedyourpet.databinding.FragmentFeedPetBinding
 import com.tyehooney.fedyourpet.model.LogAdapter

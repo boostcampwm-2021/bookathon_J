@@ -12,6 +12,8 @@
         tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_loginFragment_to_profileFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
@@ -22,19 +24,38 @@
         <action
             android:id="@+id/action_profileFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_rankingFragment"
+            app:destination="@id/rankingFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.tyehooney.fedyourpet.ui.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_animalAddFragment"
             app:destination="@id/animalAddFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/animalAddFragment"
         android:name="com.tyehooney.fedyourpet.ui.AnimalAddFragment"
         android:label="AnimalAddFragment"
-        tools:layout="@layout/fragment_animal_add" />
+        tools:layout="@layout/fragment_animal_add">
+        <action
+            android:id="@+id/action_animalAddFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@+id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/rankingFragment"
+        android:name="com.tyehooney.fedyourpet.ui.RankingFragment"
+        android:label="fragment_ranking"
+        tools:layout="@layout/fragment_ranking" />
 </navigation>

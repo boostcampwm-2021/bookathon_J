@@ -1,16 +1,16 @@
 package com.tyehooney.fedyourpet.ui
 
+import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
+import android.widget.EditText
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -78,14 +78,27 @@ class ProfileFragment : Fragment(), ProfileListener {
         }
     }
 
-    private inner class AddViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private inner class AddViewHolder(view: View, profiles: List<String>) : RecyclerView.ViewHolder(view) {
         init {
             itemView.setOnClickListener {
                 val uid = sharedPreferences.getString("uid", null)
-                uid?.let {
-                    // 새 프로필 추가
-                    // addNewProfile() 활용
-                }
+                val builder = AlertDialog.Builder(this@ProfileFragment.context)
+                val dialogView = layoutInflater.inflate(R.layout.profile_add_dialog, null)
+                val inputText = dialogView.findViewById<EditText>(R.id.dialogEditText)
+                var newProfile: String
+
+                builder.setView(dialogView)
+                    .setPositiveButton("확인") { dialogInterface, i ->
+                        newProfile = inputText.text.toString()
+                        uid?.let {
+                            // 새 프로필 추가
+                            // addNewProfile() 활용
+
+                            addNewProfile(uid, profiles + newProfile, this@ProfileFragment)
+                        }
+                    }
+                    .setNegativeButton("취소") { dialogInterface, i -> }
+                    .show()
             }
         }
     }
@@ -109,7 +122,7 @@ class ProfileFragment : Fragment(), ProfileListener {
                     ProfileViewHolder(layoutInflater.inflate(R.layout.profile_icon_list, parent, false))
                 }
                 else -> {
-                    AddViewHolder(layoutInflater.inflate(R.layout.profile_add, parent, false))
+                    AddViewHolder(layoutInflater.inflate(R.layout.profile_add, parent, false), profiles)
                 }
             }
         }
@@ -130,6 +143,11 @@ class ProfileFragment : Fragment(), ProfileListener {
     }
 
     override fun onNewProfileAdded() {
-        TODO("Not yet implemented")
+        profileAdapter?.notifyItemChanged(0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

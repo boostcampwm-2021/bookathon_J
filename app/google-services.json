@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "77379216211",
+    "project_id": "fedyourpet-aa497",
+    "storage_bucket": "fedyourpet-aa497.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77379216211:android:854bc80e85769eadd937a6",
+        "android_client_info": {
+          "package_name": "com.tyehooney.fedyourpet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77379216211-138tgpk1p0vi6n4rf7eghdccf433dutm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tyehooney.fedyourpet",
+            "certificate_hash": "08b105bb65738e381176c74b256a5b9e703751c3"
+          }
+        },
+        {
+          "client_id": "77379216211-gttal54de1m0br19jtc09o9o4vmrdmqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ8hJml3VNhgEqcxXAB_xA8vFNBvV-wLc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77379216211-gttal54de1m0br19jtc09o9o4vmrdmqo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

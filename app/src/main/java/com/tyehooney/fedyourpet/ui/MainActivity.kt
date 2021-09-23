@@ -12,5 +12,6 @@ class MainActivity : AppCompatActivity() {
         /*var transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, FeedPetFragment())
         transaction.commit()*/
+
     }
 }

@@ -2,7 +2,9 @@ package com.tyehooney.fedyourpet.ui
 
 import android.app.Activity
 import android.app.TimePickerDialog
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -19,16 +22,19 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.FragmentAnimalAddBinding
+import com.tyehooney.fedyourpet.util.addNewPet
 import java.util.*
 
 
-class AnimalAddFragment : Fragment(R.layout.fragment_animal_add) {
+class AnimalAddFragment : Fragment(R.layout.fragment_animal_add), AnimalAddListener {
     private var _binding: FragmentAnimalAddBinding? = null
     private val binding get() = _binding!!
     private val timeList = mutableListOf<Pair<Int, Int>>()
     private val timeListLiveData: MutableLiveData<List<Pair<Int, Int>>> by lazy {
         MutableLiveData()
     }
+    private var petBitmap: Bitmap? = null
+    private lateinit var sharedPreferences: SharedPreferences
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -41,6 +47,7 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add) {
                             transition: Transition<in Bitmap>?,
                         ) {
                             //resource: 불러온 이미지 비트맵
+                            petBitmap = resource
                             binding.fragmentAnimalAddImage.setImageBitmap(resource)
                         }
 
@@ -65,6 +72,8 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add) {
                 chooseImage()
             }
         }
+
+        sharedPreferences = requireActivity().getSharedPreferences("userInfo", MODE_PRIVATE)
         return view
     }
 
@@ -77,13 +86,25 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add) {
         })
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
+
+        binding.confirmAnimalAddButton.setOnClickListener {
+            val name = binding.fragmentAnimalAddEdittextName.text.toString()
+            val uid = sharedPreferences.getString("uid", null)
+            val feedingTimes = timeList.map {
+                "${it.first}:${it.second}"
+            }
+            if (name.isNotEmpty() && uid != null && feedingTimes.isNotEmpty()) {
+                petBitmap?.let {
+                    addNewPet(uid, name, feedingTimes, it, this)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 
     private fun addTime() {
         val hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -102,5 +123,14 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add) {
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         resultLauncher.launch(intent)
+    }
+
+    override fun onNewPetAdded() {
+        Toast.makeText(context, "새 애완동물이 추가되었습니다!", Toast.LENGTH_SHORT).show()
+        // 뒤로 이동
+    }
+
+    override fun onAddNewPetFailed(msg: String) {
+        Toast.makeText(context, "error! : $msg", Toast.LENGTH_SHORT).show()
     }
 }

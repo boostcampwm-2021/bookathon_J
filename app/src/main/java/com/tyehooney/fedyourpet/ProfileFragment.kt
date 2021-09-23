@@ -1,6 +1,5 @@
 package com.tyehooney.fedyourpet
 
-import android.graphics.drawable.Icon
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -27,8 +26,16 @@ class ProfileFragment : Fragment() {
     }
 
     private inner class ProfileViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         private lateinit var family: Family
-        //var profileIcon: Icon = view.findViewById(R.id.)
+//        var profileIcon: Icon = view.findViewById(R.id.)
+
+        init {
+            // TODO: on click
+            // 프로필 선택, 프로필 추가
+
+        }
+
 
         fun bind(family: Family) {
             // val name = family.name

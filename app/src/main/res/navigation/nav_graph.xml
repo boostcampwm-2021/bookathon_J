@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/rankingFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -50,4 +50,9 @@
             app:popUpTo="@+id/mainFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/rankingFragment"
+        android:name="com.tyehooney.fedyourpet.ui.RankingFragment"
+        android:label="fragment_ranking"
+        tools:layout="@layout/fragment_ranking" />
 </navigation>

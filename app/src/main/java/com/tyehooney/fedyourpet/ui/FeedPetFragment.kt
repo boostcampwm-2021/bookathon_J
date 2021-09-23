@@ -2,6 +2,7 @@ package com.tyehooney.fedyourpet.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +10,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.tyehooney.fedyourpet.databinding.FragmentFeedPetBinding
 import com.tyehooney.fedyourpet.model.LogAdapter
+import com.tyehooney.fedyourpet.model.WhoWhen
 import kotlin.random.Random
 
 class FeedPetFragment : Fragment() {
     lateinit var binding : FragmentFeedPetBinding
     var logList = mutableListOf<String>()
     lateinit var adapter : LogAdapter
+    var fbFirestore : FirebaseFirestore? = null
+
+    var cnt = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,6 +35,11 @@ class FeedPetFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentFeedPetBinding.inflate(inflater, container, false)
 
+        fbFirestore = FirebaseFirestore.getInstance()
+        for (i in 0..100){
+            fbFirestore?.collection("Logs")?.document("${i}회")?.delete()
+
+        }
         setListener()
         setAdapter()
         return binding.root
@@ -34,23 +50,38 @@ class FeedPetFragment : Fragment() {
         }
 
         binding.feedButton.setOnClickListener{
-            var str = "나,"
-            str += String.format("%02d",Random.nextInt(24))
-            str += ":"
-            str += String.format("%02d",Random.nextInt(60))
-            str +=":"
-            str += String.format("%02d",Random.nextInt(60))
-            logList.add(str)
-            adapter.notifyItemInserted(logList.lastIndex)
-            binding.recyclerLog.scrollToPosition(logList.size - 1)
+            var str = ""
+            var type = Random.nextInt(5)
+            when (type) {
+                0 -> {str = "할머니"}
+                1 -> {str = "엄마"}
+                2 -> {str = "아빠"}
+                3 -> {str = "아들"}
+                4 -> {str = "딸"}
+            }
+            var time = ""
+            time += String.format("%02d",Random.nextInt(24))
+            time += ":"
+            time += String.format("%02d",Random.nextInt(60))
+            time +=":"
+            time += String.format("%02d",Random.nextInt(60))
+            fbFirestore?.collection("Logs")?.document("${cnt}회")?.set(mapOf("whoWhen" to "${str},${time}"))
+            cnt++
+
+            fbFirestore?.collection("Logs")?.addSnapshotListener{
+                    snapshot, exception ->
+                logList.clear()
+                for (shot in snapshot!!.documents) {
+                    logList.add(shot.toObject(WhoWhen::class.java)!!.whoWhen)
+                }
+                adapter.data = logList
+                adapter.notifyDataSetChanged()
+                binding.recyclerLog.scrollToPosition(logList.size - 1)
+            }
         }
+
     }
     fun setAdapter(){
-        logList.add("아빠,09:17:35")
-        logList.add("엄마,10:08:24")
-        logList.add("딸,12:24:56")
-        logList.add("아들,15:35:31")
-        logList.add("할머니,16:23:33")
 
         adapter = LogAdapter(activity as Context)
         adapter.data = logList

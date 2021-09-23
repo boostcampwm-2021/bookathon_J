@@ -9,8 +9,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var transaction = supportFragmentManager.beginTransaction()
+        /*var transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, FeedPetFragment())
-        transaction.commit()
+        transaction.commit()*/
     }
 }

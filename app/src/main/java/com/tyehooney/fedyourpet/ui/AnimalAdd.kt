@@ -1,4 +1,4 @@
-package com.tyehooney.fedyourpet
+package com.tyehooney.fedyourpet.ui
 
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.FragmentAnimalAddBinding
 import java.util.*
 

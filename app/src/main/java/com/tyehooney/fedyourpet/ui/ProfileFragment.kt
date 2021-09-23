@@ -115,8 +115,10 @@ class ProfileFragment : Fragment(), ProfileListener {
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val profile = profiles[position]
-            if(holder is ProfileViewHolder) holder.bind(profile)
+            if (holder is ProfileViewHolder) {
+                val profile = profiles[position]
+                holder.bind(profile)
+            }
         }
 
         override fun getItemCount(): Int = profiles.size + 1

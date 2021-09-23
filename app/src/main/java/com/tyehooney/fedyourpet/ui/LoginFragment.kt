@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.LoginFragmentBinding
 import com.tyehooney.fedyourpet.util.addNewUser
 import com.tyehooney.fedyourpet.util.sendVerifyingCode
@@ -44,6 +46,7 @@ class LoginFragment : Fragment(), LoginListener {
                 binding.loginLinearLayout.visibility = View.VISIBLE
             } else {
                 // 다음 화면 이동
+                this.findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
             }
         }, 2000)
 
@@ -70,6 +73,7 @@ class LoginFragment : Fragment(), LoginListener {
         val editor = sharedPreferences.edit()
         editor.putString("uid", uid).apply()
         // 다음 화면 이동
+        this.findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
     }
 
     override fun onVerifyingCodeReceived(verificationId: String) {

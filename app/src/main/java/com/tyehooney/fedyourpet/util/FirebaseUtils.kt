@@ -76,7 +76,7 @@ private fun signInWithPhoneAuthCredential(
 fun addNewUser(uid: String, phone: String) {
     val usersCollection = Firebase.firestore.collection("Users")
     usersCollection.whereEqualTo("id", uid).get().addOnSuccessListener {
-        if(it.isEmpty) {
+        if (it.isEmpty) {
             val user = User(uid, phone, listOf("나"))
             usersCollection
                 .add(user)

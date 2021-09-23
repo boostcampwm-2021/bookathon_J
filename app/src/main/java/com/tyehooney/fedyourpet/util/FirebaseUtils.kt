@@ -15,6 +15,7 @@ import com.tyehooney.fedyourpet.model.Pet
 import com.tyehooney.fedyourpet.model.User
 import com.tyehooney.fedyourpet.ui.AnimalAddListener
 import com.tyehooney.fedyourpet.ui.LoginListener
+import com.tyehooney.fedyourpet.ui.MainListener
 import com.tyehooney.fedyourpet.ui.ProfileListener
 import java.util.concurrent.TimeUnit
 
@@ -130,6 +131,18 @@ fun addNewPet(
                         animalAddListener.onAddNewPetFailed(msg)
                     }
                 }
+            }
+        }
+}
+
+fun getMyPets(uid: String, mainListener: MainListener) {
+    val petsCollection = Firebase.firestore.collection("Pets")
+    petsCollection.whereEqualTo("ownerId", uid).get()
+        .addOnSuccessListener {
+            mainListener.onGetMyPetsSuccess(it.toObjects(Pet::class.java))
+        }.addOnFailureListener {
+            it.message?.let { msg ->
+                mainListener.onGetMyPetsFailed(msg)
             }
         }
 }

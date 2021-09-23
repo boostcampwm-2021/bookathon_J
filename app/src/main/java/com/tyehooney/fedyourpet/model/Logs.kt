@@ -1,5 +1,5 @@
 package com.tyehooney.fedyourpet.model
 
-class WhoWhen {
+class Logs {
     var whoWhen = ""
 }

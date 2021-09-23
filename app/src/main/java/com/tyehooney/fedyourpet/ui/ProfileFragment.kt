@@ -10,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.ProfileFragmentBinding
-import com.tyehooney.fedyourpet.util.addNewProfile
 import com.tyehooney.fedyourpet.util.getProfiles
 
 class ProfileFragment : Fragment(), ProfileListener {

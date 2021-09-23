@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="8dp">
+
+    <ImageView
+        android:id="@+id/pet_image_view"
+        android:layout_width="56dp"
+        android:layout_height="56dp"/>
+
+    <TextView
+        android:id="@+id/pet_name_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/feed_pet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="밥주기"
+        android:padding="4dp"/>
+</LinearLayout>

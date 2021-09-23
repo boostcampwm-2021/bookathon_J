@@ -201,5 +201,6 @@ fabric.properties
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio,android

@@ -40,6 +40,15 @@ class MainFragment : Fragment(R.layout.fragment_main), MainListener {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val profile = sharedPreferences.getString("profile", null)
+        profile?.let {
+            binding.profileTextView.text = it
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         val uid = sharedPreferences.getString("uid", null)

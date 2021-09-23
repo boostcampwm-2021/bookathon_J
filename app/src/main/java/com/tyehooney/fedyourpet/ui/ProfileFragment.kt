@@ -40,6 +40,11 @@ class ProfileFragment : Fragment(), ProfileListener {
 
         sharedPreferences = requireActivity().getSharedPreferences("userInfo", MODE_PRIVATE)
 
+        val profile = sharedPreferences.getString("profile", null)
+        profile?.let {
+            findNavController().navigate(R.id.action_profileFragment_to_mainFragment)
+        }
+
         updateUI()
         binding.apply {
             buttonRanking.setOnClickListener {
@@ -65,15 +70,13 @@ class ProfileFragment : Fragment(), ProfileListener {
 
         val icon: Button = itemView.findViewById(R.id.icon_profile)
 
-        init {
-            icon.setOnClickListener {
-                // TODO: navigate 할 때 구성원 누군지 정보 넘겨줌
-                Navigation.findNavController(view).navigate(R.id.mainFragment)
-            }
-        }
-
         fun bind(name: String) {
             icon.text = name
+            icon.setOnClickListener {
+                // TODO: navigate 할 때 구성원 누군지 정보 넘겨줌
+                sharedPreferences.edit().putString("profile", name).apply()
+                Navigation.findNavController(itemView).navigate(R.id.mainFragment)
+            }
         }
     }
 

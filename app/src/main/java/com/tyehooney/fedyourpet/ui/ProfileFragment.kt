@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.ProfileFragmentBinding
+import com.tyehooney.fedyourpet.util.addNewProfile
 import com.tyehooney.fedyourpet.util.getProfiles
 
 class ProfileFragment : Fragment(), ProfileListener {
@@ -155,7 +156,7 @@ class ProfileFragment : Fragment(), ProfileListener {
     }
 
     override fun onNewProfileAdded() {
-        profileAdapter?.notifyItemChanged(0)
+        updateUI()
     }
 
     override fun onDestroy() {

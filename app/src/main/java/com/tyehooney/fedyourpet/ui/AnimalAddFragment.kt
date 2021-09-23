@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -99,6 +100,14 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add), AnimalAddListe
                 }
             }
         }
+
+        binding.cancelAnimalAddButton.setOnClickListener {
+            goBack()
+        }
+    }
+
+    private fun goBack() {
+        findNavController().navigate(R.id.action_animalAddFragment_to_mainFragment)
     }
 
     override fun onDestroyView() {
@@ -127,7 +136,7 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add), AnimalAddListe
 
     override fun onNewPetAdded() {
         Toast.makeText(context, "새 애완동물이 추가되었습니다!", Toast.LENGTH_SHORT).show()
-        // 뒤로 이동
+        goBack()
     }
 
     override fun onAddNewPetFailed(msg: String) {

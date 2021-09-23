@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 // FIXME: Dummy
 class Family {
     var id = 1
-    var name = "아빠"
+    var name = "+"
 }
 
 class ProfileViewModel : ViewModel() {

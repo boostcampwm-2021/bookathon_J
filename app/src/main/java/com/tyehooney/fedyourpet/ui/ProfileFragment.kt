@@ -2,17 +2,22 @@ package com.tyehooney.fedyourpet.ui
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.ProfileFragmentBinding
 
 class ProfileFragment : Fragment() {
+    val TAG = "Profile"
+
     private var _binding: ProfileFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -32,6 +37,7 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = ProfileFragmentBinding.inflate(inflater, container, false)
         profileRecyclerView = binding.recyclerProfile
+        profileRecyclerView.layoutManager = GridLayoutManager(context, 2)
         updateUI()
         return binding.root
     }
@@ -54,7 +60,7 @@ class ProfileFragment : Fragment() {
         init {
             icon.setOnClickListener {
                 // TODO: navigate 할 때 구성원 누군지 정보 넘겨줌
-                Toast.makeText(context, "${family.name}", Toast.LENGTH_SHORT).show() // FIXME
+                Navigation.findNavController(view).navigate(R.id.mainFragment)
             }
         }
 
@@ -66,8 +72,11 @@ class ProfileFragment : Fragment() {
             if (family.id == -1) {
                 icon.setOnClickListener {
                     // TODO: 추가 팝업 생성
-                    Toast.makeText(context, "${family.name}", Toast.LENGTH_SHORT).show() // FIXME
-                    profileViewModel.profiles.add(Family())
+                    val test = Family()
+                    test.name = "아들"
+                    test.id = 1
+                    profileViewModel.profiles.add(test)
+                    profileAdapter!!.notifyItemChanged(adapterPosition)
                 }
             }
         }
@@ -85,7 +94,7 @@ class ProfileFragment : Fragment() {
 
             holder.bind(profile)
 
-            if (position == profiles.size - 1) {
+            if (position == profiles.size - 1) { // FIXME: id == -1 -> 마지막 패밀리 일 때
                 val emptyFamily = Family()
                 emptyFamily.id = -1
                 emptyFamily.name = "+"

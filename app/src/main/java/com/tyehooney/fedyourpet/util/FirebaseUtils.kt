@@ -11,6 +11,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.tyehooney.fedyourpet.model.User
 import com.tyehooney.fedyourpet.ui.LoginListener
+import com.tyehooney.fedyourpet.ui.ProfileListener
 import java.util.concurrent.TimeUnit
 
 fun sendVerifyingCode(
@@ -78,10 +79,28 @@ fun addNewUser(uid: String, phone: String) {
     usersCollection.whereEqualTo("id", uid).get().addOnSuccessListener {
         if (it.isEmpty) {
             val user = User(uid, phone, listOf("나"))
-            usersCollection
-                .add(user)
+            usersCollection.document(uid).set(user)
                 .addOnSuccessListener { Log.d("Login", "add user: success") }
                 .addOnFailureListener { e -> Log.e("Login", "add user: failed ${e.message}") }
         }
     }
+}
+
+fun getProfiles(uid: String, profileListener: ProfileListener) {
+    val res = ArrayList<String>()
+    val usersCollection = Firebase.firestore.collection("Users")
+    usersCollection.document(uid).get()
+        .addOnSuccessListener {
+            it.toObject(User::class.java)?.profiles?.let { profiles ->
+                profileListener.onProfileReceived(profiles)
+            }
+        }
+}
+
+fun addNewProfile(uid: String, newProfiles: List<String>, profileListener: ProfileListener) {
+    val usersCollection = Firebase.firestore.collection("Users")
+    usersCollection.document(uid).update("profiles", newProfiles)
+        .addOnSuccessListener {
+            profileListener.onNewProfileAdded()
+        }
 }

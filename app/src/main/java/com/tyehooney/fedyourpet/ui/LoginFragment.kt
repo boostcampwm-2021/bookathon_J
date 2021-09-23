@@ -20,7 +20,7 @@ import com.tyehooney.fedyourpet.util.signInWithVerifyingCode
 
 class LoginFragment : Fragment(), LoginListener {
 
-    private lateinit var viewModel: LoginViewModel
+    //private lateinit var viewModel: LoginViewModel
     private lateinit var binding: LoginFragmentBinding
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -31,8 +31,8 @@ class LoginFragment : Fragment(), LoginListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        binding.viewModel = viewModel
+        //viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        //binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

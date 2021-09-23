@@ -3,7 +3,6 @@ package com.tyehooney.fedyourpet.ui
 import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.ProfileFragmentBinding
+import com.tyehooney.fedyourpet.util.addNewProfile
 import com.tyehooney.fedyourpet.util.getProfiles
 
 class ProfileFragment : Fragment(), ProfileListener {
@@ -27,15 +27,8 @@ class ProfileFragment : Fragment(), ProfileListener {
 
     private lateinit var profileRecyclerView: RecyclerView
     private var profileAdapter: ProfileAdapter? = null
-    private val profileViewModel: ProfileViewModel by lazy {
-        ViewModelProvider(this).get(ProfileViewModel::class.java)
-    }
 
     private lateinit var sharedPreferences: SharedPreferences
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,8 +91,6 @@ class ProfileFragment : Fragment(), ProfileListener {
                         newProfile = inputText.text.toString()
                         uid?.let {
                             // 새 프로필 추가
-                            // addNewProfile() 활용
-
                             addNewProfile(uid, profiles + newProfile, this@ProfileFragment)
                         }
                     }
@@ -155,7 +146,7 @@ class ProfileFragment : Fragment(), ProfileListener {
     }
 
     override fun onNewProfileAdded() {
-        profileAdapter?.notifyItemChanged(0)
+        updateUI()
     }
 
     override fun onDestroy() {

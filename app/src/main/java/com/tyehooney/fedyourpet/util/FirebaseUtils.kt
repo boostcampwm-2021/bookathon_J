@@ -1,11 +1,15 @@
 package com.tyehooney.fedyourpet.util
 
 import android.app.Activity
+import android.util.Log
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.tyehooney.fedyourpet.model.User
 import com.tyehooney.fedyourpet.ui.LoginListener
 import java.util.concurrent.TimeUnit
 
@@ -69,6 +73,15 @@ private fun signInWithPhoneAuthCredential(
         }
 }
 
-private fun addNewUser(uid: String) {
-
+fun addNewUser(uid: String, phone: String) {
+    val usersCollection = Firebase.firestore.collection("Users")
+    usersCollection.whereEqualTo("id", uid).get().addOnSuccessListener {
+        if(it.isEmpty) {
+            val user = User(uid, phone, listOf("나"))
+            usersCollection
+                .add(user)
+                .addOnSuccessListener { Log.d("Login", "add user: success") }
+                .addOnFailureListener { e -> Log.e("Login", "add user: failed ${e.message}") }
+        }
+    }
 }

@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.tyehooney.fedyourpet.databinding.LoginFragmentBinding
+import com.tyehooney.fedyourpet.util.addNewUser
 import com.tyehooney.fedyourpet.util.sendVerifyingCode
 import com.tyehooney.fedyourpet.util.signInWithVerifyingCode
 
@@ -65,8 +66,10 @@ class LoginFragment : Fragment(), LoginListener {
 
     override fun onLoginSuccess(uid: String) {
         binding.progressBar.visibility = View.GONE
+        addNewUser(uid, binding.phoneEditText.text.toString())
         val editor = sharedPreferences.edit()
         editor.putString("uid", uid).apply()
+        // 다음 화면 이동
     }
 
     override fun onVerifyingCodeReceived(verificationId: String) {

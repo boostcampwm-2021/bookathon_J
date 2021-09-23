@@ -55,18 +55,20 @@
 
     <Button
         android:id="@+id/fragment_animal_add_button_time"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_baseline_add_alarm_24"
-        app:layout_constraintEnd_toEndOf="@id/fragment_animal_add_edittext_name"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_animal_add_edittext_name" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추가"
+        app:layout_constraintTop_toTopOf="@+id/fragment_animal_add_text_time"
+        app:layout_constraintBottom_toBottomOf="@+id/fragment_animal_add_text_time"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toEndOf="@id/fragment_animal_add_text_time" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_animal_add_timeview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/fragment_animal_add_image"
         app:layout_constraintTop_toBottomOf="@id/fragment_animal_add_text_time" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.tyehooney.fedyourpet
+package com.tyehooney.fedyourpet.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

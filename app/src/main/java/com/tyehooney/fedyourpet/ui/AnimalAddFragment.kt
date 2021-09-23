@@ -14,7 +14,7 @@ import com.tyehooney.fedyourpet.databinding.FragmentAnimalAddBinding
 import java.util.*
 
 
-class AnimalAdd : Fragment(R.layout.fragment_animal_add) {
+class AnimalAddFragment : Fragment(R.layout.fragment_animal_add) {
     private var _binding: FragmentAnimalAddBinding? = null
     private val binding get() = _binding!!
     private val timeList = mutableListOf<Pair<Int, Int>>()
@@ -55,8 +55,8 @@ class AnimalAdd : Fragment(R.layout.fragment_animal_add) {
 
 
     private fun addTime() {
-        val hourOfDay = Calendar.HOUR_OF_DAY
-        val minute = Calendar.MINUTE
+        val hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val minute = Calendar.getInstance().get(Calendar.MINUTE)
         val timePickerDialog =
             TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { timePicker, i, i2 ->
                 timeList.add(Pair(i, i2))

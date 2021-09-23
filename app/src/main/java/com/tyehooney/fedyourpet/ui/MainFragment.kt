@@ -37,6 +37,12 @@ class MainFragment : Fragment(R.layout.fragment_main), MainListener {
 
         sharedPreferences = requireActivity().getSharedPreferences("userInfo", MODE_PRIVATE)
 
+        findNavController().addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.profileFragment) {
+                sharedPreferences.edit().remove("profile").apply()
+            }
+        }
+
         return view
     }
 

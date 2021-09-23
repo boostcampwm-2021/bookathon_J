@@ -87,7 +87,6 @@ fun addNewUser(uid: String, phone: String) {
 }
 
 fun getProfiles(uid: String, profileListener: ProfileListener) {
-    val res = ArrayList<String>()
     val usersCollection = Firebase.firestore.collection("Users")
     usersCollection.document(uid).get()
         .addOnSuccessListener {

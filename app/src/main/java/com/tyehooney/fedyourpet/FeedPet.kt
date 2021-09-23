@@ -5,7 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,9 +26,17 @@ class FeedPet : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_feed_pet, container, false)
-        toolbar = view.findViewById(R.id.toolbar)
-        //(activity as AppCompatActivity).setSupportActionBar(toolbar)
+        init(view)
+        setListener()
         return view
+    }
+    fun init(view: View) {
+        toolbar = view.findViewById(R.id.toolbar)
+    }
+    fun setListener(){
+        toolbar.setNavigationOnClickListener{
+            //Toast.makeText(this, "back",Toast.LENGTH_SHORT).
+        }
     }
 
 }

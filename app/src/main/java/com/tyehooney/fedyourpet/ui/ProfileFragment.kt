@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tyehooney.fedyourpet.R
@@ -46,6 +47,12 @@ class ProfileFragment : Fragment(), ProfileListener {
         sharedPreferences = requireActivity().getSharedPreferences("userInfo", MODE_PRIVATE)
 
         updateUI()
+        binding.apply {
+            buttonRanking.setOnClickListener {
+                this@ProfileFragment.findNavController()
+                    .navigate(R.id.action_profileFragment_to_rankingFragment)
+            }
+        }
         return binding.root
     }
 
@@ -88,14 +95,14 @@ class ProfileFragment : Fragment(), ProfileListener {
         }
     }
 
-    private inner class ProfileAdapter(var profiles: List<String>)
-        : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private inner class ProfileAdapter(var profiles: List<String>) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val viewTypeProfile = 1
         private val viewTypeAdd = 2
 
         override fun getItemViewType(position: Int): Int {
-            return when(position) {
+            return when (position) {
                 profiles.size -> viewTypeAdd
                 else -> viewTypeProfile
             }
@@ -104,7 +111,13 @@ class ProfileFragment : Fragment(), ProfileListener {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
                 viewTypeProfile -> {
-                    ProfileViewHolder(layoutInflater.inflate(R.layout.profile_icon_list, parent, false))
+                    ProfileViewHolder(
+                        layoutInflater.inflate(
+                            R.layout.profile_icon_list,
+                            parent,
+                            false
+                        )
+                    )
                 }
                 else -> {
                     AddViewHolder(layoutInflater.inflate(R.layout.profile_add, parent, false))

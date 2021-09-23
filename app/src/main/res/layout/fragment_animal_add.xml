@@ -37,7 +37,7 @@
             android:id="@+id/confirm_animal_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:backgroundTint="@color/white"
             android:text="확인"

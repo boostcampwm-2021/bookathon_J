@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.tyehooney.fedyourpet.R
@@ -43,7 +44,11 @@ class LoginFragment : Fragment(), LoginListener {
         Handler(Looper.getMainLooper()).postDelayed({
             sharedPreferences = requireActivity().getSharedPreferences("userInfo", MODE_PRIVATE)
             if (sharedPreferences.getString("uid", null) == null) {
-                binding.loginLinearLayout.visibility = View.VISIBLE
+                binding.loginLinearLayout.apply {
+                    val fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+                    animation = fadeIn
+                    visibility = View.VISIBLE
+                }
             } else {
                 // 다음 화면 이동
                 this.findNavController().navigate(R.id.action_loginFragment_to_profileFragment)

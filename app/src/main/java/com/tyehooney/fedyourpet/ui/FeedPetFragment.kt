@@ -64,7 +64,7 @@ class FeedPetFragment : Fragment(), FeedPetListener {
         )
 
         profile = sharedPreferences.getString("profile", null).toString()
-        binding.toolbar.title = args.petName
+        binding.textPetName.setText(args.petName)
         binding.textDate.text = date
         Glide.with(activity as Context).load(args.petImage).into(binding.imagePet)
 
@@ -73,11 +73,10 @@ class FeedPetFragment : Fragment(), FeedPetListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setListener() {
-        binding.toolbar.setNavigationOnClickListener {
+        binding.imageBackButton.setOnClickListener{
             findNavController().navigateUp()
             Toast.makeText(activity, "back", Toast.LENGTH_SHORT).show()
         }
-
         binding.feedButton.setOnClickListener {
             val uid = sharedPreferences.getString("uid", null)
             uid?.let { addFeedLog(petId, uid, profile, this) }

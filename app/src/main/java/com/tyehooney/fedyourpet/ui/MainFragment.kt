@@ -78,11 +78,12 @@ class MainFragment : Fragment(R.layout.fragment_main), MainListener {
             itemView.findViewById<TextView>(R.id.pet_name_text_view).text = pet.name
 
             itemView.setOnClickListener {
-                val args = Bundle()
-                args.putString("petId", pet.id)
-                args.putString("petName", pet.name)
-                args.putString("petImage", pet.image)
-                // FeedPetFragment로 데이터 전달 필요
+                findNavController()
+                    .navigate(
+                        MainFragmentDirections.actionMainFragmentToFeedPetFragment(
+                            pet.id, pet.name, pet.image
+                        )
+                    )
             }
         }
     }

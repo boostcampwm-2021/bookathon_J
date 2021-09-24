@@ -12,25 +12,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tyehooney.fedyourpet.databinding.FragmentFeedPetBinding
+import com.tyehooney.fedyourpet.model.FeedLog
 import com.tyehooney.fedyourpet.model.LogAdapter
 import com.tyehooney.fedyourpet.model.Logs
+import com.tyehooney.fedyourpet.util.addFeedLog
+import com.tyehooney.fedyourpet.util.getTodaysLog
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
-class FeedPetFragment : Fragment() {
+class FeedPetFragment : Fragment(), FeedPetListener {
     private lateinit var binding: FragmentFeedPetBinding
     private lateinit var adapter: LogAdapter
     private lateinit var profile: String // shared preference 에서 받아온 가족 구성원 프로필
 
-    private var logList = mutableListOf<String>()
-    private var fbFirestore: FirebaseFirestore? = null
-    private var cnt = 0
+    private var logList = mutableListOf<FeedLog>()
+    private lateinit var petId: String
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,34 +45,30 @@ class FeedPetFragment : Fragment() {
 
         initialize()
         setListener()
-        setAdapter()
 
         return binding.root
     }
 
     @SuppressLint("SimpleDateFormat")
     private fun initialize() {
+
+        val args: FeedPetFragmentArgs by navArgs()
+        petId = args.petId
+
         val datePattern = "yyyy-MM-dd"
         val simpleDateFormat = SimpleDateFormat(datePattern)
         val date = simpleDateFormat.format(Date())
-        val img =
-            "https://firebasestorage.googleapis.com/v0/b/fedyourpet-aa497.appspot.com/o/%EB%A9%8D%EB%AD%89%EC%9D%B4_1632426381729.png?alt=media&token=a96fab84-b07b-4f02-88f9-a411875102bb"
-        val sharedPreferences = requireActivity().getSharedPreferences(
+        sharedPreferences = requireActivity().getSharedPreferences(
             "userInfo",
             Context.MODE_PRIVATE
         )
 
         profile = sharedPreferences.getString("profile", null).toString()
+        binding.toolbar.title = args.petName
         binding.textDate.text = date
-        Glide.with(activity as Context).load(img).into(binding.imagePet)
-        fbFirestore = FirebaseFirestore.getInstance()
+        Glide.with(activity as Context).load(args.petImage).into(binding.imagePet)
 
-        // FIXME
-        for (i in 0..100) {
-            fbFirestore?.collection("Logs_Dog")
-                ?.document("${i}회")
-                ?.delete()
-        }
+        getTodaysLog(petId, this)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -79,30 +79,8 @@ class FeedPetFragment : Fragment() {
         }
 
         binding.feedButton.setOnClickListener {
-            // TODO: DB 연동
-            var time = ""
-            time += String.format("%02d", Random.nextInt(24))
-            time += ":"
-            time += String.format("%02d", Random.nextInt(60))
-            time += ":"
-            time += String.format("%02d", Random.nextInt(60))
-
-            fbFirestore?.collection("Logs_Dog")
-                ?.document("${cnt}회")
-                ?.set(mapOf("whoWhen" to ("${profile},${time}")))
-
-            cnt++
-
-            fbFirestore?.collection("Logs_Dog")
-                ?.addSnapshotListener { snapshot, exception ->
-                    logList.clear()
-                    for (shot in snapshot!!.documents) {
-                        logList.add(shot.toObject(Logs::class.java)!!.whoWhen)
-                    }
-                    adapter.data = logList
-                    adapter.notifyDataSetChanged()
-                    binding.recyclerLog.scrollToPosition(logList.size - 1)
-                }
+            val uid = sharedPreferences.getString("uid", null)
+            uid?.let { addFeedLog(petId, uid, profile, this) }
         }
     }
 
@@ -115,5 +93,23 @@ class FeedPetFragment : Fragment() {
         val decoration = DividerItemDecoration(activity as Context, LinearLayoutManager.VERTICAL)
         binding.recyclerLog.addItemDecoration(decoration)
         binding.recyclerLog.adapter = adapter
+    }
+
+    override fun onGetLogsSuccess(logs: List<FeedLog>) {
+        logList.clear()
+        logList.addAll(logs)
+        setAdapter()
+    }
+
+    override fun onGetLogsFailed(msg: String) {
+        Toast.makeText(context, "error : $msg", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onAddLogSuccess() {
+        getTodaysLog(petId, this)
+    }
+
+    override fun onAddLogFailed(msg: String) {
+        Toast.makeText(context, "error : $msg", Toast.LENGTH_SHORT).show()
     }
 }

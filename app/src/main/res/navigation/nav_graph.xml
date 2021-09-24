@@ -41,6 +41,20 @@
             app:destination="@id/profileFragment"
             app:popUpTo="@+id/profileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainFragment_to_feedPetFragment"
+            app:destination="@id/feedPetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedPetFragment"
+        android:name="com.tyehooney.fedyourpet.ui.FeedPetFragment"
+        android:label="FeedPetFragment"
+        tools:layout="@layout/fragment_feed_pet">
+        <action
+            android:id="@+id/action_feedPetFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/animalAddFragment"

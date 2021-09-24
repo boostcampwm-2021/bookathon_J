@@ -136,12 +136,12 @@ fun addNewPet(
                 petsCollection.document(petId)
                     .set(Pet(petId, uid, name, it.toString(), feedingTimes))
                     .addOnSuccessListener {
-                    animalAddListener.onNewPetAdded()
-                }.addOnFailureListener { e ->
-                    e.message?.let { msg ->
-                        animalAddListener.onAddNewPetFailed(msg)
+                        animalAddListener.onNewPetAdded()
+                    }.addOnFailureListener { e ->
+                        e.message?.let { msg ->
+                            animalAddListener.onAddNewPetFailed(msg)
+                        }
                     }
-                }
             }
         }
 }
@@ -171,6 +171,15 @@ fun getTodaysLog(petId: String, feedPetListener: FeedPetListener) {
         }
 }
 
+fun getAllLog(petName: String, petId: String, rankingListener: RankingListener) {
+    val logsCollection = Firebase.firestore.collection("Logs")
+    logsCollection.whereEqualTo("petId", petId).get()
+        .addOnSuccessListener { rankingListener.onGetLogsSuccess(it.toObjects(FeedLog::class.java), petName) }
+        .addOnFailureListener { e ->
+            e.message?.let { rankingListener.onGetLogsFailed(it) }
+        }
+}
+
 fun addFeedLog(petId: String, uid: String, profile: String, feedPetListener: FeedPetListener) {
     val logsCollection = Firebase.firestore.collection("Logs")
     val newFeedLog = FeedLog(petId, uid, profile)
@@ -180,6 +189,7 @@ fun addFeedLog(petId: String, uid: String, profile: String, feedPetListener: Fee
             e.message?.let { feedPetListener.onAddLogFailed(it) }
         }
 }
+
 fun getMyPets(uid: String, rankingListener: RankingListener) {
     val petsCollection = Firebase.firestore.collection("Pets")
     petsCollection.whereEqualTo("ownerId", uid).get()

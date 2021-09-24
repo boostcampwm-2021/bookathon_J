@@ -92,6 +92,7 @@ class FeedPetFragment : Fragment(), FeedPetListener {
         val decoration = DividerItemDecoration(activity as Context, LinearLayoutManager.VERTICAL)
         binding.recyclerLog.addItemDecoration(decoration)
         binding.recyclerLog.adapter = adapter
+        binding.recyclerLog.scrollToPosition(adapter.data.size - 1)
     }
 
     override fun onGetLogsSuccess(logs: List<FeedLog>) {

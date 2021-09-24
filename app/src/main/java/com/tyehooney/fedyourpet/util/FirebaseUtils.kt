@@ -122,9 +122,11 @@ fun addNewPet(
     storageRef.putBytes(data)
         .addOnSuccessListener {
             storageRef.downloadUrl.addOnSuccessListener {
-                val newPet = Pet(uid, name, it.toString(), feedingTimes)
                 val petsCollection = Firebase.firestore.collection("Pets")
-                petsCollection.add(newPet).addOnSuccessListener {
+                val petId = petsCollection.document().id
+                petsCollection.document(petId)
+                    .set(Pet(petId, uid, name, it.toString(), feedingTimes))
+                    .addOnSuccessListener {
                     animalAddListener.onNewPetAdded()
                 }.addOnFailureListener { e ->
                     e.message?.let { msg ->

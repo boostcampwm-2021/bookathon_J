@@ -11,12 +11,11 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.tyehooney.fedyourpet.model.FeedLog
 import com.tyehooney.fedyourpet.model.Pet
 import com.tyehooney.fedyourpet.model.User
-import com.tyehooney.fedyourpet.ui.AnimalAddListener
-import com.tyehooney.fedyourpet.ui.LoginListener
-import com.tyehooney.fedyourpet.ui.MainListener
-import com.tyehooney.fedyourpet.ui.ProfileListener
+import com.tyehooney.fedyourpet.ui.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 fun sendVerifyingCode(
@@ -146,5 +145,28 @@ fun getMyPets(uid: String, mainListener: MainListener) {
             it.message?.let { msg ->
                 mainListener.onGetMyPetsFailed(msg)
             }
+        }
+}
+
+fun getTodaysLog(petId: String, feedPetListener: FeedPetListener) {
+    val logsCollection = Firebase.firestore.collection("Logs")
+    val today = Calendar.getInstance()
+    today[Calendar.HOUR] = 0
+    today[Calendar.MINUTE] = 0
+    logsCollection.whereEqualTo("petId", petId)
+        .whereGreaterThan("feedAt", today.time).get()
+        .addOnSuccessListener { feedPetListener.onGetLogsSuccess(it.toObjects(FeedLog::class.java)) }
+        .addOnFailureListener { e ->
+            e.message?.let { feedPetListener.onGetLogsFailed(it) }
+        }
+}
+
+fun addFeedLog(petId: String, uid: String, profile: String, feedPetListener: FeedPetListener) {
+    val logsCollection = Firebase.firestore.collection("Logs")
+    val newFeedLog = FeedLog(petId, uid, profile)
+    logsCollection.add(newFeedLog)
+        .addOnSuccessListener { feedPetListener.onAddLogSuccess() }
+        .addOnFailureListener { e ->
+            e.message?.let { feedPetListener.onAddLogFailed(it) }
         }
 }

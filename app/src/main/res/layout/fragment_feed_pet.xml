@@ -60,6 +60,8 @@
         android:layout_height="0dp"
         android:paddingHorizontal="16dp"
         android:id="@+id/recycler_log"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_pet"

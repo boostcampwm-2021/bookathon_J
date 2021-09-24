@@ -97,6 +97,7 @@ class AnimalAddFragment : Fragment(R.layout.fragment_animal_add), AnimalAddListe
             if (name.isNotEmpty() && uid != null && feedingTimes.isNotEmpty()) {
                 petBitmap?.let {
                     addNewPet(uid, name, feedingTimes, it, this)
+                    goBack()
                 }
             }
         }

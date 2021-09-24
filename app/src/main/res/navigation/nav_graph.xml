@@ -81,4 +81,9 @@
         android:name="com.tyehooney.fedyourpet.ui.RankingFragment"
         android:label="fragment_ranking"
         tools:layout="@layout/fragment_ranking" />
+    <fragment
+        android:id="@+id/feedPetFragment"
+        android:name="com.tyehooney.fedyourpet.ui.FeedPetFragment"
+        android:label="fragment_feed_pet"
+        tools:layout="@layout/fragment_feed_pet" />
 </navigation>

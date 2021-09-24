@@ -78,8 +78,11 @@ class MainFragment : Fragment(R.layout.fragment_main), MainListener {
             itemView.findViewById<TextView>(R.id.pet_name_text_view).text = pet.name
 
             itemView.setOnClickListener {
-                //TODO: FeedPetFragment 전환
-                //Pet 정보 전달 필요
+                val args = Bundle()
+                args.putString("petId", pet.id)
+                args.putString("petName", pet.name)
+                args.putString("petImage", pet.image)
+                // FeedPetFragment로 데이터 전달 필요
             }
         }
     }

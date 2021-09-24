@@ -100,6 +100,16 @@ fun getProfiles(uid: String, profileListener: ProfileListener) {
         }
 }
 
+fun getProfiles(uid: String, rankingListener: RankingListener) {
+    val usersCollection = Firebase.firestore.collection("Users")
+    usersCollection.document(uid).get()
+        .addOnSuccessListener {
+            it.toObject(User::class.java)?.profiles?.let { profiles ->
+                rankingListener.onProfileReceived(profiles)
+            }
+        }
+}
+
 fun addNewProfile(uid: String, newProfiles: List<String>, profileListener: ProfileListener) {
     val usersCollection = Firebase.firestore.collection("Users")
     usersCollection.document(uid).update("profiles", newProfiles)
@@ -168,5 +178,16 @@ fun addFeedLog(petId: String, uid: String, profile: String, feedPetListener: Fee
         .addOnSuccessListener { feedPetListener.onAddLogSuccess() }
         .addOnFailureListener { e ->
             e.message?.let { feedPetListener.onAddLogFailed(it) }
+        }
+}
+fun getMyPets(uid: String, rankingListener: RankingListener) {
+    val petsCollection = Firebase.firestore.collection("Pets")
+    petsCollection.whereEqualTo("ownerId", uid).get()
+        .addOnSuccessListener {
+            rankingListener.onGetMyPetsSuccess(it.toObjects(Pet::class.java))
+        }.addOnFailureListener {
+            it.message?.let { msg ->
+                rankingListener.onGetMyPetsFailed(msg)
+            }
         }
 }

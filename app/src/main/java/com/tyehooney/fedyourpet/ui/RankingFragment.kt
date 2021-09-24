@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
@@ -20,13 +22,17 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.tyehooney.fedyourpet.R
 import com.tyehooney.fedyourpet.databinding.FragmentRankingBinding
+import com.tyehooney.fedyourpet.model.Pet
+import com.tyehooney.fedyourpet.util.getMyPets
+import com.tyehooney.fedyourpet.util.getProfiles
 
-class RankingFragment : Fragment(R.layout.fragment_ranking) {
+class RankingFragment : Fragment(R.layout.fragment_ranking), RankingListener {
     private var _binding: FragmentRankingBinding? = null
     private val binding get() = _binding!!
     private val memberList =
         listOf(Member("아빠", 1, 2), Member("엄마", 2, 3), Member("아들", 3, 5), Member("딸", 4, 2))
     private val entries = arrayListOf<BarEntry>()
+    private val profiles = mutableListOf<String>()
     private lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +42,7 @@ class RankingFragment : Fragment(R.layout.fragment_ranking) {
         val view = binding.root
         val chart = binding.rankingBarchart
         sharedPreferences = requireActivity().getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+        getProfsAndPets()
         val labels = arrayListOf<String>()
         memberList.forEachIndexed { idx, it ->
             entries.add(
@@ -79,6 +86,14 @@ class RankingFragment : Fragment(R.layout.fragment_ranking) {
         return view
     }
 
+    private fun getProfsAndPets() {
+        val uid = sharedPreferences.getString("uid", null)
+        uid?.let {
+            getProfiles(it, this)
+            getMyPets(it, this)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -96,6 +111,19 @@ class RankingFragment : Fragment(R.layout.fragment_ranking) {
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             return days.getOrNull(value.toInt()) ?: value.toString()
         }
+    }
+
+    override fun onProfileReceived(profiles: List<String>) {
+        this.profiles.addAll(profiles)
+        Log.d("profiles", this.profiles.toString())
+    }
+
+    override fun onGetMyPetsSuccess(pets: List<Pet>) {
+        Log.d("pets", pets.toString())
+    }
+
+    override fun onGetMyPetsFailed(msg: String) {
+        Toast.makeText(context, "error : $msg", Toast.LENGTH_SHORT).show()
     }
 }
 

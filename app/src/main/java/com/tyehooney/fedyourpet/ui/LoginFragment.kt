@@ -2,7 +2,6 @@ package com.tyehooney.fedyourpet.ui
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper

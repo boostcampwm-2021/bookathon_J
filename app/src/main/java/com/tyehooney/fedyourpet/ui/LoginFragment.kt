@@ -14,7 +14,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.tyehooney.fedyourpet.R
-import com.tyehooney.fedyourpet.databinding.LoginFragmentBinding
+import com.tyehooney.fedyourpet.databinding.FragmentLoginBinding
 import com.tyehooney.fedyourpet.util.addNewUser
 import com.tyehooney.fedyourpet.util.sendVerifyingCode
 import com.tyehooney.fedyourpet.util.signInWithVerifyingCode
@@ -22,7 +22,7 @@ import com.tyehooney.fedyourpet.util.signInWithVerifyingCode
 class LoginFragment : Fragment(), LoginListener {
 
     //private lateinit var viewModel: LoginViewModel
-    private lateinit var binding: LoginFragmentBinding
+    private lateinit var binding: FragmentLoginBinding
 
     private lateinit var sharedPreferences: SharedPreferences
     private var verificationId = ""
@@ -31,7 +31,7 @@ class LoginFragment : Fragment(), LoginListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         //viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         //binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

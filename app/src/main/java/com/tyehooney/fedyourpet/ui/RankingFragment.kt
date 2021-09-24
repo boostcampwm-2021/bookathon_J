@@ -1,5 +1,7 @@
 package com.tyehooney.fedyourpet.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -25,6 +27,7 @@ class RankingFragment : Fragment(R.layout.fragment_ranking) {
     private val memberList =
         listOf(Member("아빠", 1, 2), Member("엄마", 2, 3), Member("아들", 3, 5), Member("딸", 4, 2))
     private val entries = arrayListOf<BarEntry>()
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +35,7 @@ class RankingFragment : Fragment(R.layout.fragment_ranking) {
         _binding = FragmentRankingBinding.inflate(inflater, container, false)
         val view = binding.root
         val chart = binding.rankingBarchart
+        sharedPreferences = requireActivity().getSharedPreferences("userInfo", Context.MODE_PRIVATE)
         val labels = arrayListOf<String>()
         memberList.forEachIndexed { idx, it ->
             entries.add(

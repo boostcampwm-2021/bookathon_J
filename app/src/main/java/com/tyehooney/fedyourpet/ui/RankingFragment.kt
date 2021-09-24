@@ -97,26 +97,14 @@ class RankingFragment : Fragment(R.layout.fragment_ranking), RankingListener {
         chart.xAxis.setLabelCount(labels.size, true)
         chart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         chart.xAxis.axisMinimum = 0F
-//        chart.legend.setCustom(
-//            listOf<LegendEntry>(
-//                LegendEntry(
-//                    "개",
-//                    Legend.LegendForm.DEFAULT,
-//                    Float.NaN,
-//                    Float.NaN,
-//                    null,
-//                    Color.GREEN
-//                ),
-//                LegendEntry(
-//                    "고양이",
-//                    Legend.LegendForm.DEFAULT,
-//                    Float.NaN,
-//                    Float.NaN,
-//                    null,
-//                    Color.YELLOW
-//                )
-//            )
-//        )
+        val legendEntry = mutableListOf<LegendEntry>()
+        pets.forEachIndexed { idx, it ->
+            legendEntry.add(LegendEntry(it.name, Legend.LegendForm.DEFAULT,
+                Float.NaN,
+                Float.NaN,
+                null, colors[idx % colors.size]))
+        }
+        chart.legend.setCustom(legendEntry)
         chart.animateY(1400, Easing.EaseOutBounce)
         chart.invalidate()
     }

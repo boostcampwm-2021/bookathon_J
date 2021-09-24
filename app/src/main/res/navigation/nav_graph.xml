@@ -55,6 +55,15 @@
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="petId"
+            app:argType="string"/>
+        <argument
+            android:name="petName"
+            app:argType="string"/>
+        <argument
+            android:name="petImage"
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/animalAddFragment"
